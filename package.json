@@ -1,0 +1,77 @@
+{
+  "name": "@alisaitteke/noun-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for The Noun Project - search and download icons directly in Cursor AI and Claude",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alisaitteke/noun-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alisaitteke/noun-mcp/issues"
+  },
+  "homepage": "https://github.com/alisaitteke/noun-mcp#readme",
+  "author": "Ali Sait Teke <alisaitteke@gmail.com> (https://github.com/alisaitteke)",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "noun-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "docs/icons",
+    "docs/hero.png"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build",
+    "test": "npm run build && node dist/index.js --help || echo 'Server built successfully'",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "noun-project",
+    "icons",
+    "icon-search",
+    "icon-download",
+    "cursor",
+    "cursor-ai",
+    "claude",
+    "claude-desktop",
+    "ai",
+    "ai-tools",
+    "svg",
+    "png",
+    "design",
+    "developer-tools"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.3",
+    "axios": "^1.7.7",
+    "bottleneck": "^2.19.5",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.5",
+    "lru-cache": "^10.4.3",
+    "oauth-1.0a": "^2.2.6",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

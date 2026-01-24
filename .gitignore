@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.DS_Store
+*.log
+.taskmaster
+.idea
+
+# Keep docs/icons for README
+!docs/icons/*.svg
