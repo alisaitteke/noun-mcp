@@ -92,6 +92,7 @@ claude mcp add \
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/star-white.svg"><img src="docs/icons/star.svg" width="24" height="24" alt="Features"></picture> Features
 
+
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/search-white.svg"><img src="docs/icons/search.svg" width="20" height="20" alt="Search"></picture> **Icon Search**: Find icons with filters for style, line weight, and licensing
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/download-white.svg"><img src="docs/icons/download.svg" width="20" height="20" alt="Download"></picture> **Icon Download**: Get SVG or PNG files with custom colors and sizes
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/book-white.svg"><img src="docs/icons/book.svg" width="20" height="20" alt="Collection"></picture> **Collection Browser**: Explore curated icon collections
