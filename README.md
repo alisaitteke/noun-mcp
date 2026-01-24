@@ -568,6 +568,13 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - [Model Context Protocol](https://modelcontextprotocol.io/) - For the MCP specification
 - [Anthropic](https://www.anthropic.com/) - For Claude and MCP development
 
+## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/package-white.svg"><img src="docs/icons/package.svg" width="24" height="24" alt="Author"></picture> Author
+
+**Ali Sait Teke**
+
+- GitHub: [@alisaitteke](https://github.com/alisaitteke)
+- NPM: [@alisaitteke](https://www.npmjs.com/~alisaitteke)
+
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/email-white.svg"><img src="docs/icons/email.svg" width="24" height="24" alt="Support"></picture> Support
 
 - **Issues:** [GitHub Issues](https://github.com/alisaitteke/noun-mcp/issues)
