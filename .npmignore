@@ -1,0 +1,51 @@
+# Source files (only ship dist/)
+src/
+*.ts
+!*.d.ts
+
+# Development files
+tsconfig.json
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Task Master
+.taskmaster/
+
+# Documentation (keep only essential)
+NOTES.md
+COST_OPTIMIZATION.md
+NPX_USAGE.md
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Misc
+node_modules/
+*.tgz
