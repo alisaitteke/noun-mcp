@@ -100,9 +100,6 @@ claude mcp add \
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/chart-white.svg"><img src="docs/icons/chart.svg" width="20" height="20" alt="Chart"></picture> **Usage Tracking**: Monitor your API usage and limits
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/free-white.svg"><img src="docs/icons/free.svg" width="20" height="20" alt="Free"></picture> **FREE Tier Mode**: Smart optimizations for 5K monthly API calls
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/diamond-white.svg"><img src="docs/icons/diamond.svg" width="20" height="20" alt="Diamond"></picture> **PAID Tier Mode**: Unlimited access with no restrictions
-- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/rocket-white.svg"><img src="docs/icons/rocket.svg" width="20" height="20" alt="Rocket"></picture> **Easy Setup**: Install and run in minutes
-- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/lock-white.svg"><img src="docs/icons/lock.svg" width="20" height="20" alt="Lock"></picture> **Secure**: OAuth 1.0a authentication
-- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/lightning-white.svg"><img src="docs/icons/lightning.svg" width="20" height="20" alt="Lightning"></picture> **Fast**: Built-in rate limiting and caching
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checklist-white.svg"><img src="docs/icons/checklist.svg" width="24" height="24" alt="Requirements"></picture> Requirements
 
