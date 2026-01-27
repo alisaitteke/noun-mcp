@@ -8,3 +8,5 @@ dist/
 
 # Keep docs/icons for README
 !docs/icons/*.svg
+.mcpregistry_github_token
+.mcpregistry_registry_token
