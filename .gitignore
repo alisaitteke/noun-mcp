@@ -10,3 +10,4 @@ dist/
 !docs/icons/*.svg
 .mcpregistry_github_token
 .mcpregistry_registry_token
+noun-mcp.code-workspace
