@@ -6,22 +6,36 @@
     "url": "https://github.com/alisaitteke/noun-mcp",
     "source": "github"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@alisaitteke/noun-mcp",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "transport": {
         "type": "stdio"
       },
       "environmentVariables": [
         {
-          "description": "Your API key for the service",
+          "description": "Consumer Key from The Noun Project API",
           "isRequired": true,
           "format": "string",
           "isSecret": true,
-          "name": "YOUR_API_KEY"
+          "name": "NOUN_CONSUMER_KEY"
+        },
+        {
+          "description": "Consumer Secret from The Noun Project API",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true,
+          "name": "NOUN_CONSUMER_SECRET"
+        },
+        {
+          "description": "API tier level: FREE (5K calls/month) or PAID (unlimited)",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": false,
+          "name": "NOUN_API_TIER"
         }
       ]
     }
