@@ -1,6 +1,6 @@
 {
   "name": "@alisaitteke/noun-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MCP server for The Noun Project - search and download icons directly in Cursor AI and Claude",
   "repository": {
     "type": "git",
