@@ -49,3 +49,5 @@ NPX_USAGE.md
 # Misc
 node_modules/
 *.tgz
+.mcpregistry_github_token
+.mcpregistry_registry_token

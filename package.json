@@ -62,7 +62,7 @@
   "mcpName": "io.github.alisaitteke/noun-mcp",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.25.3",
-    "axios": "^1.7.7",
+    "axios": "^1.13.5",
     "bottleneck": "^2.19.5",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
@@ -74,5 +74,9 @@
     "@types/node": "^22.10.2",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
+  },
+  "overrides": {
+    "@hono/node-server": "^1.19.10",
+    "hono": "^4.12.4"
   }
 }
