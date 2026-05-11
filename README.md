@@ -12,6 +12,8 @@
 
 MCP (Model Context Protocol) server for searching, downloading, and using icons from The Noun Project in **Cursor AI**, **Claude Desktop**, and other MCP-supported AI tools.
 
+</div>
+
 ---
 
 ### 🚀 Quick Start
@@ -85,8 +87,6 @@ claude mcp add \
 </table>
 
 [Get your API keys →](https://thenounproject.com/developers/apps/)
-
-</div>
 
 > **What is this?** A bridge that lets AI assistants search and download professional icons for your projects. No manual browsing needed - just ask your AI!
 
