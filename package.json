@@ -1,7 +1,7 @@
 {
   "name": "@alisaitteke/noun-mcp",
   "version": "1.0.3",
-  "description": "MCP server for The Noun Project - search and download icons directly in Cursor AI and Claude",
+  "description": "Production MCP server for The Noun Project — search & download icons in Cursor/Claude with OAuth 1.0a, rate limiting, and FREE-tier cost optimization",
   "repository": {
     "type": "git",
     "url": "https://github.com/alisaitteke/noun-mcp.git"
@@ -23,7 +23,11 @@
     "LICENSE",
     "CHANGELOG.md",
     "docs/icons",
-    "docs/hero.png"
+    "docs/hero.png",
+    "docs/ARCHITECTURE.md",
+    "docs/SOCIAL.md",
+    "docs/og-github.png",
+    "docs/og-linkedin.png"
   ],
   "sideEffects": false,
   "publishConfig": {
@@ -33,6 +37,7 @@
     "build": "tsc && chmod +x dist/index.js",
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
+    "generate:og": "node scripts/generate-og-assets.mjs",
     "prepublishOnly": "npm run build",
     "test": "npm run build && node dist/index.js --help || echo 'Server built successfully'",
     "prepare": "npm run build"
@@ -54,7 +59,13 @@
     "svg",
     "png",
     "design",
-    "developer-tools"
+    "developer-tools",
+    "typescript",
+    "oauth",
+    "open-source",
+    "software-architect",
+    "developer-experience",
+    "api-integration"
   ],
   "engines": {
     "node": ">=18.0.0"
@@ -71,6 +82,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^22.10.2",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"

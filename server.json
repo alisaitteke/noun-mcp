@@ -1,17 +1,17 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.alisaitteke/noun-mcp",
-  "description": "MCP server for The Noun Project - search and download icons directly in Cursor AI and Claude",
+  "description": "Production MCP server for The Noun Project — search & download icons in Cursor/Claude with OAuth 1.0a, rate limiting, and FREE-tier cost optimization",
   "repository": {
     "url": "https://github.com/alisaitteke/noun-mcp",
     "source": "github"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@alisaitteke/noun-mcp",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "transport": {
         "type": "stdio"
       },

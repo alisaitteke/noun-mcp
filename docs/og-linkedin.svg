@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="627" viewBox="0 0 1200 627">
+  
+    <defs>
+      <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0B1220"/>
+        <stop offset="100%" stop-color="#111827"/>
+      </linearGradient>
+      <radialGradient id="glow" cx="85%" cy="15%" r="55%">
+        <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.18"/>
+        <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="accentLine" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#3B82F6"/>
+        <stop offset="100%" stop-color="#1D4ED8" stop-opacity="0.2"/>
+      </linearGradient>
+    </defs>
+  <rect width="1200" height="627" fill="url(#bg)"/>
+  <rect width="1200" height="627" fill="url(#glow)"/>
+
+  <!-- left decorative panel -->
+  <rect x="48" y="48" width="360" height="531" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)"/>
+  <g transform="translate(108,140)"><rect x="43.199999999999996" y="43.199999999999996" width="52.8" height="52.8" rx="4" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.7"/><rect x="115.19999999999999" y="43.199999999999996" width="52.8" height="52.8" rx="4" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.7"/><rect x="187.2" y="43.199999999999996" width="52.8" height="52.8" rx="4" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.7"/><rect x="43.199999999999996" y="115.19999999999999" width="52.8" height="52.8" rx="4" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.7"/><rect x="115.19999999999999" y="115.19999999999999" width="52.8" height="52.8" rx="4" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.7"/><rect x="187.2" y="115.19999999999999" width="52.8" height="52.8" rx="4" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.7"/><rect x="43.199999999999996" y="187.2" width="52.8" height="52.8" rx="4" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.7"/><rect x="115.19999999999999" y="187.2" width="52.8" height="52.8" rx="4" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.7"/><rect x="187.2" y="187.2" width="52.8" height="52.8" rx="4" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.7"/></g>
+  
+    <g transform="translate(168,360)" stroke="#94A3B8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="40.32" cy="40.32" r="26.880000000000003"/>
+      <line x1="59.519999999999996" y1="59.519999999999996" x2="78.72" y2="78.72"/>
+    </g>
+  
+    <g transform="translate(288,360)" stroke="#94A3B8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M48 17.28 L48 59.519999999999996"/>
+      <polyline points="33.599999999999994,48 48,65.28 62.400000000000006,48"/>
+      <path d="M21.12 74.88 L74.88 74.88"/>
+    </g>
+
+  <!-- vertical divider -->
+  <line x1="448" y1="120" x2="448" y2="507" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- headline -->
+  <text x="500" y="180" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="#F8FAFC" letter-spacing="-0.5">Built for the AI</text>
+  <text x="500" y="232" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="#F8FAFC" letter-spacing="-0.5">Developer Workflow</text>
+  <rect x="500" y="252" width="56" height="3" rx="1.5" fill="#3B82F6"/>
+
+  
+      <circle cx="500" cy="294" r="4" fill="#3B82F6"/>
+      <text x="524" y="300" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22" font-weight="400" fill="#94A3B8">7 MCP tools for icon search and download</text>
+      <circle cx="500" cy="346" r="4" fill="#3B82F6"/>
+      <text x="524" y="352" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22" font-weight="400" fill="#94A3B8">OAuth 1.0a API client with rate limiting</text>
+      <circle cx="500" cy="398" r="4" fill="#3B82F6"/>
+      <text x="524" y="404" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22" font-weight="400" fill="#94A3B8">FREE-tier cost optimizer (5K calls/mo)</text>
+
+  <!-- footer bar -->
+  <rect x="0" y="555" width="1200" height="72" fill="rgba(0,0,0,0.25)"/>
+  <text x="600" y="600" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#64748B">alisait.com  ·  @alisaitteke</text>
+</svg>

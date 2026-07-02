@@ -12,6 +12,8 @@
 
 MCP (Model Context Protocol) server for searching, downloading, and using icons from The Noun Project in **Cursor AI**, **Claude Desktop**, and other MCP-supported AI tools.
 
+TypeScript · OAuth 1.0a · tier-aware API cost optimization · production-ready MCP tooling
+
 </div>
 
 ---
@@ -100,6 +102,18 @@ claude mcp add \
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/chart-white.svg"><img src="docs/icons/chart.svg" width="20" height="20" alt="Chart"></picture> **Usage Tracking**: Monitor your API usage and limits
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/free-white.svg"><img src="docs/icons/free.svg" width="20" height="20" alt="Free"></picture> **FREE Tier Mode**: Smart optimizations for 5K monthly API calls
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/diamond-white.svg"><img src="docs/icons/diamond.svg" width="20" height="20" alt="Diamond"></picture> **PAID Tier Mode**: Unlimited access with no restrictions
+
+## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/package-white.svg"><img src="docs/icons/package.svg" width="24" height="24" alt="Builder"></picture> About the Builder
+
+Built by **[Ali Sait Teke](https://alisait.com)** — Full-Stack / AI-Era Software Architect based in London.
+
+This project is part of an open-source [MCP tooling ecosystem](https://alisait.com/projects) (Docker, Temporal, Photoshop, npm, and more) that brings real-world APIs into AI-assisted development workflows. Implemented in **TypeScript/Node.js**; broader portfolio spans **Python**, **Go**, **React**, **Next.js**, and **Vue**.
+
+- GitHub: [@alisaitteke](https://github.com/alisaitteke)
+- LinkedIn: [Ali Sait Teke](https://www.linkedin.com/in/alisait/)
+- Portfolio: [alisait.com](https://alisait.com)
+
+**Architecture deep-dive:** [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · **Sharing guide:** [docs/SOCIAL.md](docs/SOCIAL.md)
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checklist-white.svg"><img src="docs/icons/checklist.svg" width="24" height="24" alt="Requirements"></picture> Requirements
 
@@ -475,10 +489,15 @@ noun-mcp/
 │   │   └── schemas.ts       # Zod schemas & TypeScript types
 │   └── utils/
 │       └── costOptimizer.ts # Cost optimization logic
+├── docs/
+│   ├── ARCHITECTURE.md      # System design & technical overview
+│   └── SOCIAL.md            # LinkedIn / GitHub sharing guide
 ├── package.json
 ├── tsconfig.json
 └── README.md
 ```
+
+For system design, data flow, and design decisions, see **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/bug-white.svg"><img src="docs/icons/bug.svg" width="24" height="24" alt="Troubleshooting"></picture> Troubleshooting
 
@@ -567,10 +586,13 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/package-white.svg"><img src="docs/icons/package.svg" width="24" height="24" alt="Author"></picture> Author
 
-**Ali Sait Teke**
+**[Ali Sait Teke](https://alisait.com)** — Full-Stack / AI-Era Software Architect
 
 - GitHub: [@alisaitteke](https://github.com/alisaitteke)
+- LinkedIn: [Ali Sait Teke](https://www.linkedin.com/in/alisait/)
+- Portfolio: [alisait.com](https://alisait.com)
 - NPM: [@alisaitteke](https://www.npmjs.com/~alisaitteke)
+- More MCP projects: [alisait.com/projects](https://alisait.com/projects)
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/email-white.svg"><img src="docs/icons/email.svg" width="24" height="24" alt="Support"></picture> Support
 
