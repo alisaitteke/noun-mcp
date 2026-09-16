@@ -99,16 +99,26 @@ jobs:
       - name: Verify npm publish (allow already-published version)
         run: |
           TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PKG="$(node -p "require('./package.json').name")"
           if [[ "${{ steps.npm_publish.outcome }}" == "success" ]]; then
-            echo "Published @alisaitteke/noun-mcp@${TAG_VERSION} to npm."
-            exit 0
+            echo "npm publish exited 0 for ${PKG}@${TAG_VERSION}."
+          elif npm view "${PKG}@${TAG_VERSION}" version >/dev/null 2>&1; then
+            echo "npm version ${TAG_VERSION} already published; continuing."
+          else
+            echo "npm publish failed and version ${TAG_VERSION} is not on npm." >&2
+            echo "Set the NPM_TOKEN repository secret (npm Automation token; granular tokens that require OTP will fail CI)." >&2
+            exit 1
           fi
-          if npm view "@alisaitteke/noun-mcp@${TAG_VERSION}" version >/dev/null 2>&1; then
-            echo "npm version ${TAG_VERSION} already published; continuing to MCP Registry."
-            exit 0
-          fi
-          echo "npm publish failed and version ${TAG_VERSION} is not on npm." >&2
-          echo "Set the NPM_TOKEN repository secret (npm Automation/Publish token)." >&2
+          # npm returns 0 before the version is readable; MCP Registry 404s until it is.
+          for attempt in 1 2 3 4 5 6 7 8; do
+            if npm view "${PKG}@${TAG_VERSION}" version >/dev/null 2>&1; then
+              echo "${PKG}@${TAG_VERSION} is visible on npm."
+              exit 0
+            fi
+            echo "attempt ${attempt}: ${PKG}@${TAG_VERSION} not visible yet; waiting 15s..."
+            sleep 15
+          done
+          echo "${PKG}@${TAG_VERSION} still not readable on npm after waiting." >&2
           exit 1
 
       - name: Install MCP Publisher
@@ -120,7 +130,16 @@ jobs:
       - name: Publish to MCP Registry
         run: |
           ./mcp-publisher login github-oidc
-          ./mcp-publisher publish
+          for attempt in 1 2 3 4 5; do
+            if ./mcp-publisher publish; then
+              echo "MCP Registry publish succeeded on attempt ${attempt}."
+              exit 0
+            fi
+            echo "attempt ${attempt} failed; waiting for npm to propagate..."
+            sleep $((attempt * 20))
+          done
+          echo "::error::mcp-publisher publish failed after 5 attempts."
+          exit 1
 
       - name: Refresh release notes (npm published)
         env:

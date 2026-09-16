@@ -51,5 +51,29 @@ jobs:
 
       - name: Publish to MCP Registry
         run: |
+          TAG_VERSION="${{ inputs.tag }}"
+          TAG_VERSION="${TAG_VERSION#v}"
+          PKG="$(node -p "require('./package.json').name")"
+          for attempt in 1 2 3 4 5 6 7 8; do
+            if npm view "${PKG}@${TAG_VERSION}" version >/dev/null 2>&1; then
+              echo "${PKG}@${TAG_VERSION} is visible on npm."
+              break
+            fi
+            if [[ "$attempt" -eq 8 ]]; then
+              echo "${PKG}@${TAG_VERSION} is not on npm; publish that version first." >&2
+              exit 1
+            fi
+            echo "attempt ${attempt}: ${PKG}@${TAG_VERSION} not visible yet; waiting 15s..."
+            sleep 15
+          done
           ./mcp-publisher login github-oidc
-          ./mcp-publisher publish
+          for attempt in 1 2 3 4 5; do
+            if ./mcp-publisher publish; then
+              echo "MCP Registry publish succeeded on attempt ${attempt}."
+              exit 0
+            fi
+            echo "attempt ${attempt} failed; waiting for npm to propagate..."
+            sleep $((attempt * 20))
+          done
+          echo "::error::mcp-publisher publish failed after 5 attempts."
+          exit 1

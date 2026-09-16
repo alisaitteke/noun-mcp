@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-09-16
+
+### Fixed
+
+- Release workflow waits until the npm version is readable and retries MCP Registry publish, so a just-published package is not rejected with a 404.
+
 ## [1.0.4] - 2026-09-16
 
 ### Added
