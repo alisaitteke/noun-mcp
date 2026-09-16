@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Release workflow treats npm **Validating** (publish-time malware scan) as success instead of failing when `npm view` still 404s.
+
 ## [1.0.5] - 2026-09-16
 
 ### Fixed

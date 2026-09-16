@@ -84,6 +84,13 @@ and refreshes release notes once npm is live.
    failed **publish** job from Actions, or run [Refresh Release Notes](.github/workflows/refresh-release-notes.yml)
    after a manual `npm publish` + `./mcp-publisher publish`.
 
+   npm scans every new version before it is installable ([publish-time malware
+   scanning](https://github.blog/changelog/2026-07-28-npm-publish-time-malware-scanning-and-dual-use-metadata/)).
+   The package page may show **Validating** for ~5–15 minutes; `npm view` 404s
+   during that window even after `npm publish` succeeded. The Release workflow
+   treats that as success and skips MCP Registry with a warning. Once the
+   version is live, run [Publish MCP Registry](.github/workflows/publish-mcp-registry.yml).
+
 Always tag the **release commit on `master`**, not a feature branch. Re-pushing an
 existing tag is safe — the workflow updates the GitHub Release for that tag.
 
