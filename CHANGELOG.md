@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-09-16
+
 ### Added
 
 - Request layer: typed `ApiError`, 429/5xx retry with a Retry-After cap, GET LRU cache, and v2 hourly/daily/monthly × service/icon quota harvesting.
