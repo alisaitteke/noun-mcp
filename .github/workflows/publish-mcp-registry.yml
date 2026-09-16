@@ -1,0 +1,55 @@
+# Publish server.json to the Official MCP Registry without re-publishing to npm.
+# Use when npm is already live but registry metadata is stale. See CONTRIBUTING.md.
+name: Publish MCP Registry
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Git tag to publish metadata for (e.g. v1.0.4)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish-registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.tag }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Sync server.json with package.json
+        run: npm run sync:server-version
+
+      - name: Assert server.json version matches tag
+        run: |
+          TAG_VERSION="${{ inputs.tag }}"
+          TAG_VERSION="${TAG_VERSION#v}"
+          SERVER_VERSION="$(node -p "require('./server.json').version")"
+          if [[ "$SERVER_VERSION" != "$TAG_VERSION" ]]; then
+            echo "server.json version ($SERVER_VERSION) does not match tag ($TAG_VERSION)" >&2
+            exit 1
+          fi
+
+      - name: Install MCP Publisher
+        run: |
+          curl -fsSL \
+            "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" \
+            | tar xz mcp-publisher
+
+      - name: Publish to MCP Registry
+        run: |
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish

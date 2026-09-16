@@ -470,6 +470,12 @@ npm install
 npm run dev
 ```
 
+### Test
+
+```bash
+npm test
+```
+
 ### Build for Production
 
 ```bash
@@ -583,7 +589,7 @@ An **icon call** is any request whose URL includes an icon ID (`get_icon`, `down
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/handshake-white.svg"><img src="docs/icons/handshake.svg" width="24" height="24" alt="Contributing"></picture> Contributing
 
-Contributions are welcome!
+Contributions are welcome. See **[CONTRIBUTING.md](CONTRIBUTING.md)** for setup, language policy, and the GitHub Release → npm → MCP Registry publish flow.
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`

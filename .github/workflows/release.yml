@@ -1,0 +1,129 @@
+# Creates a GitHub Release when a version tag (v*) is pushed, then publishes to
+# npm and the Official MCP Registry. See CONTRIBUTING.md § Releasing.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  github-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          package-manager-cache: false
+
+      - name: Validate release tag
+        run: |
+          PREV=$(git tag --sort=-v:refname | grep -v "^${GITHUB_REF_NAME}$" | head -1 || true)
+          bash scripts/validate-release-tag.sh "${GITHUB_REF_NAME}" "${PREV}"
+
+      - name: Build release notes
+        id: notes
+        run: |
+          PREV=$(git tag --sort=-v:refname | grep -v "^${GITHUB_REF_NAME}$" | head -1 || true)
+          BODY=$(bash scripts/build-release-notes.sh "${GITHUB_REF_NAME}" "${PREV}")
+          { echo "body<<EOF"; echo "$BODY"; echo "EOF"; } >> "$GITHUB_OUTPUT"
+
+      - uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body: ${{ steps.notes.outputs.body }}
+
+  publish:
+    needs: github-release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    concurrency:
+      group: publish-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Validate release tag
+        run: |
+          PREV=$(git tag --sort=-v:refname | grep -v "^${GITHUB_REF_NAME}$" | head -1 || true)
+          bash scripts/validate-release-tag.sh "${GITHUB_REF_NAME}" "${PREV}"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify packed ESM imports
+        run: npm run verify:pack
+
+      - name: Sync server.json with package.json
+        run: npm run sync:server-version
+
+      - name: Assert server.json version matches tag
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          SERVER_VERSION="$(node -p "require('./server.json').version")"
+          if [[ "$SERVER_VERSION" != "$TAG_VERSION" ]]; then
+            echo "server.json version ($SERVER_VERSION) does not match tag ($TAG_VERSION)" >&2
+            exit 1
+          fi
+
+      - name: Publish to npm
+        id: npm_publish
+        continue-on-error: true
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Verify npm publish (allow already-published version)
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          if [[ "${{ steps.npm_publish.outcome }}" == "success" ]]; then
+            echo "Published @alisaitteke/noun-mcp@${TAG_VERSION} to npm."
+            exit 0
+          fi
+          if npm view "@alisaitteke/noun-mcp@${TAG_VERSION}" version >/dev/null 2>&1; then
+            echo "npm version ${TAG_VERSION} already published; continuing to MCP Registry."
+            exit 0
+          fi
+          echo "npm publish failed and version ${TAG_VERSION} is not on npm." >&2
+          echo "Set the NPM_TOKEN repository secret (npm Automation/Publish token)." >&2
+          exit 1
+
+      - name: Install MCP Publisher
+        run: |
+          curl -fsSL \
+            "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" \
+            | tar xz mcp-publisher
+
+      - name: Publish to MCP Registry
+        run: |
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish
+
+      - name: Refresh release notes (npm published)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NPM_PUBLISHED: "1"
+        run: bash scripts/refresh-release-notes.sh "${GITHUB_REF_NAME}"

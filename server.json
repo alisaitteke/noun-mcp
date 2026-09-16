@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.alisaitteke/noun-mcp",
-  "description": "Production MCP server for The Noun Project — search & download icons in Cursor/Claude with OAuth 1.0a, rate limiting, and FREE-tier cost optimization",
+  "description": "Production MCP server for The Noun Project — search & download icons in Cursor/Claude with OAuth…",
   "repository": {
     "url": "https://github.com/alisaitteke/noun-mcp",
     "source": "github"
@@ -31,7 +31,7 @@
           "name": "NOUN_CONSUMER_SECRET"
         },
         {
-          "description": "API tier level: FREE (5K calls/month) or PAID (unlimited)",
+          "description": "API tier: FREE (trial quotas) or PAID (Pay-Per-Use)",
           "isRequired": true,
           "format": "string",
           "isSecret": false,

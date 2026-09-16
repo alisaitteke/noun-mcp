@@ -27,20 +27,23 @@
     "docs/ARCHITECTURE.md",
     "docs/SOCIAL.md",
     "docs/og-github.png",
-    "docs/og-linkedin.png"
+    "docs/og-linkedin.png",
+    "scripts/prepare.mjs"
   ],
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsc && chmod +x dist/index.js",
+    "build": "node scripts/clean-dist.mjs && tsc && chmod +x dist/index.js",
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
     "generate:og": "node scripts/generate-og-assets.mjs",
-    "prepublishOnly": "npm run build",
-    "test": "npx tsx --test src/api/requestLayer.test.ts && npm run build",
-    "prepare": "npm run build"
+    "test": "tsx --test src/api/requestLayer.test.ts",
+    "prepare": "node scripts/prepare.mjs",
+    "sync:server-version": "tsx scripts/sync-server-version.ts",
+    "verify:pack": "node scripts/verify-pack.mjs",
+    "prepublishOnly": "npm run build && npm run sync:server-version && npm run verify:pack"
   },
   "keywords": [
     "mcp",
