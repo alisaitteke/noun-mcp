@@ -43,7 +43,7 @@ Each icon has two versions:
 - `icon.svg` - Black version for light mode
 - `icon-white.svg` - White version for dark mode
 
-These icons are used in the README.md file with the `<picture>` tag to automatically switch between light and dark versions based on the user's theme preference.
+These icons were used in an earlier README layout with the `<picture>` tag (light/dark). The current landing-page README no longer embeds them; they remain here for attribution.
 
 ## Usage in README
 

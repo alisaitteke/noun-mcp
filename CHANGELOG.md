@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.6] - 2026-09-16
+
+### Changed
+
+- README is now a short landing page (Photoshop MCP style) with ZH/ES/DE/JA/TR locales; tool reference, troubleshooting, and local-dev notes moved to `docs/`.
+- npm package now ships `docs/available-tools.md`, `docs/troubleshooting.md`, `docs/development.md`, and `examples/` MCP client configs.
+
 ### Fixed
 
 - Release workflow treats npm **Validating** (publish-time malware scan) as success instead of failing when `npm view` still 404s.

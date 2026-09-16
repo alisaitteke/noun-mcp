@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "noun-project": {
+      "command": "npx",
+      "args": ["-y", "@alisaitteke/noun-mcp"],
+      "env": {
+        "NOUN_CONSUMER_KEY": "your_key",
+        "NOUN_CONSUMER_SECRET": "your_secret",
+        "NOUN_API_TIER": "FREE"
+      }
+    }
+  }
+}

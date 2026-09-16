@@ -1,6 +1,6 @@
 {
   "name": "@alisaitteke/noun-mcp",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Production MCP server for The Noun Project — search & download icons in Cursor/Claude with OAuth 1.0a, rate limiting, and FREE-tier cost optimization",
   "repository": {
     "type": "git",
@@ -26,8 +26,12 @@
     "docs/hero.png",
     "docs/ARCHITECTURE.md",
     "docs/SOCIAL.md",
+    "docs/available-tools.md",
+    "docs/troubleshooting.md",
+    "docs/development.md",
     "docs/og-github.png",
     "docs/og-linkedin.png",
+    "examples",
     "scripts/prepare.mjs"
   ],
   "sideEffects": false,

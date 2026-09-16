@@ -9,6 +9,7 @@ This project uses **English** as its canonical language for all project artifact
 - **Pull request titles, descriptions, and commit messages** must be written in English.
 - **Source code, comments, and user-facing strings** must be written in English.
 - **Documentation** (README, guides, inline docs) must be written in English.
+- **Locale READMEs** (`README.zh-CN.md`, `README.es.md`, `README.de.md`, `README.ja.md`, `README.tr.md`) must stay in sync with the English landing page in `README.md`. Canonical guides under `docs/` remain English-only.
 
 Issues and review comments may be written in any language, but English is preferred so maintainers and future contributors can search and reference them easily.
 
