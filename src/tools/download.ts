@@ -3,6 +3,7 @@
  */
 
 import { getIcon, downloadIcon } from '../api/client.js';
+import { formatUsageBrief } from '../api/usage.js';
 import { 
   GetIconInputSchema, 
   DownloadIconInputSchema,
@@ -104,12 +105,12 @@ export async function handleDownloadIcon(args: unknown) {
  * Format icon details
  */
 function formatIconDetails(response: GetIconResponse): string {
-  const { icon, usage_limits } = response;
+  const { icon } = response;
   
   let output = `🎨 **Icon Details**\n\n`;
   output += `**Name:** ${icon.term}\n`;
   output += `**ID:** ${icon.id}\n`;
-  output += `**Style:** ${icon.styles.map(s => s.style + (s.line_weight ? ` (weight: ${s.line_weight})` : '')).join(', ')}\n`;
+  output += `**Style:** ${icon.styles?.length ? icon.styles.map(s => s.style + (s.line_weight ? ` (weight: ${s.line_weight})` : '')).join(', ') : 'unspecified'}\n`;
   output += `**License:** ${icon.license_description}\n\n`;
   
   output += `👤 **Creator Information:**\n`;
@@ -140,10 +141,13 @@ function formatIconDetails(response: GetIconResponse): string {
   
   output += `🔗 **Permalink:** https://thenounproject.com${icon.permalink}\n`;
   output += `📝 **Attribution:** ${icon.attribution}\n\n`;
-  
-  output += `📈 **API Usage:** ${usage_limits.monthly.usage}/${usage_limits.monthly.limit} (monthly)\n\n`;
-  
-  output += `💡 **Tip:** Use the \`download_icon\` tool to download this icon.\n`;
+
+  const usageLine = formatUsageBrief(response.usage_limits ?? response);
+  if (usageLine) {
+    output += `📈 **${usageLine}**\n\n`;
+  }
+
+  output += `💡 **Tip:** Use \`download_icon\` to save the file. Avoid repeating \`get_icon\` — each call is an icon-quota request (150/day on the free trial).\n`;
   
   return output;
 }
@@ -152,7 +156,7 @@ function formatIconDetails(response: GetIconResponse): string {
  * Format download result
  */
 function formatDownloadResult(response: DownloadIconResponse, input: any): string {
-  const { content_type, usage_limits } = response;
+  const { content_type } = response;
   
   let output = `✅ **Icon Downloaded**\n\n`;
   output += `**Format:** ${content_type}\n`;
@@ -169,11 +173,13 @@ function formatDownloadResult(response: DownloadIconResponse, input: any): strin
   output += `\`\`\`\n`;
   output += `data:${content_type};base64,${response.base64_encoded_file.substring(0, 100)}...\n`;
   output += `\`\`\`\n\n`;
-  
-  output += `📈 **API Usage:** ${usage_limits.monthly.usage}/${usage_limits.monthly.limit} (monthly)\n\n`;
-  
-  output += `💡 **Tip:** You can decode the base64 string to create the file.\n`;
-  output += `Or use the \`save_to_file\` parameter to save directly to a file.\n`;
+
+  const usageLine = formatUsageBrief(response.usage_limits ?? response);
+  if (usageLine) {
+    output += `📈 **${usageLine}**\n\n`;
+  }
+
+  output += `💡 **Tip:** Decode the base64 string, or pass \`save_to_file\` to write the icon to disk.\n`;
   
   return output;
 }
@@ -182,15 +188,18 @@ function formatDownloadResult(response: DownloadIconResponse, input: any): strin
  * Format download result with saved file
  */
 function formatDownloadResultWithFile(response: DownloadIconResponse, filePath: string): string {
-  const { content_type, usage_limits } = response;
-  
+  const { content_type } = response;
+
   let output = `✅ **Icon Successfully Saved**\n\n`;
   output += `**File:** ${filePath}\n`;
   output += `**Format:** ${content_type}\n`;
   output += `**Size:** ${Buffer.from(response.base64_encoded_file, 'base64').length} bytes\n\n`;
-  
-  output += `📈 **API Usage:** ${usage_limits.monthly.usage}/${usage_limits.monthly.limit} (monthly)\n\n`;
-  
+
+  const usageLine = formatUsageBrief(response.usage_limits ?? response);
+  if (usageLine) {
+    output += `📈 **${usageLine}**\n\n`;
+  }
+
   output += `✨ Icon is now ready to use in your project!\n`;
   
   return output;

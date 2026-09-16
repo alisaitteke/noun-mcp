@@ -125,11 +125,32 @@ export interface Icon {
   collections: IconCollection[];
 }
 
+export interface LegacyUsageWindow {
+  limit?: number;
+  usage?: number;
+}
+
+export interface QuotaUsageWindow {
+  service_calls_used?: number;
+  service_calls_limit?: number;
+  icon_calls_used?: number;
+  icon_calls_limit?: number;
+  period_start?: string;
+  period_end?: string;
+  limit?: number;
+  usage?: number;
+}
+
 export interface UsageLimits {
-  monthly: {
-    limit: number;
-    usage: number;
-  };
+  hourly?: QuotaUsageWindow;
+  daily?: QuotaUsageWindow;
+  monthly?: QuotaUsageWindow & LegacyUsageWindow;
+}
+
+export interface UsageWindows {
+  hourly?: QuotaUsageWindow;
+  daily?: QuotaUsageWindow;
+  monthly?: QuotaUsageWindow;
 }
 
 export interface SearchIconsResponse {
@@ -138,20 +159,20 @@ export interface SearchIconsResponse {
   total: number;
   next_page?: string;
   prev_page?: string;
-  usage_limits: UsageLimits;
+  usage_limits?: UsageLimits;
 }
 
 export interface GetIconResponse {
   generated_at: string;
   icon: Icon;
   total: number;
-  usage_limits: UsageLimits;
+  usage_limits?: UsageLimits;
 }
 
 export interface DownloadIconResponse {
   base64_encoded_file: string;
   content_type: string;
-  usage_limits: UsageLimits;
+  usage_limits?: UsageLimits;
 }
 
 export interface Collection {
@@ -172,25 +193,25 @@ export interface SearchCollectionsResponse {
   total: number;
   next_page?: string;
   prev_page?: string;
-  usage_limits: UsageLimits;
+  usage_limits?: UsageLimits;
 }
 
 export interface GetCollectionResponse {
   generated_at: string;
   collection: Collection;
   total: number;
-  usage_limits: UsageLimits;
+  usage_limits?: UsageLimits;
 }
 
 export interface IconAutocompleteResponse {
   generated_at: string;
   suggestions: string[];
-  usage_limits: UsageLimits;
+  usage_limits?: UsageLimits;
 }
 
 export interface CheckUsageResponse {
-  monthly: {
-    limit: number;
-    usage: number;
-  };
+  monthly?: LegacyUsageWindow;
+  usage?: UsageWindows;
+  generated_at?: string;
+  usage_limits?: UsageLimits;
 }

@@ -53,7 +53,7 @@ Shipped: Noun MCP Server — search & download 5M+ icons from The Noun Project
 directly inside Cursor and Claude via Model Context Protocol.
 
 Built with TypeScript, OAuth 1.0a, rate limiting, and a FREE-tier cost optimizer
-so hobbyists don't burn their 5K monthly API quota on day one.
+so hobbyists don't burn their trial service/icon quotas on day one.
 
 Part of my open-source MCP tooling work (Docker, Temporal, Photoshop, npm…).
 Architecture write-up in the repo.

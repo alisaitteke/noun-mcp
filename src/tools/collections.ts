@@ -3,6 +3,7 @@
  */
 
 import { searchCollections, getCollection, iconAutocomplete } from '../api/client.js';
+import { formatUsageBrief } from '../api/usage.js';
 import {
   SearchCollectionsInputSchema,
   GetCollectionInputSchema,
@@ -11,7 +12,7 @@ import {
   GetCollectionResponse,
   IconAutocompleteResponse,
 } from '../types/schemas.js';
-import { isFreeTier, shouldLimitPagination, getCostWarning } from '../utils/costOptimizer.js';
+import { isFreeTier, shouldLimitPagination, getCostWarningFromSnapshot } from '../utils/costOptimizer.js';
 
 /**
  * search_collections tool handler
@@ -111,7 +112,7 @@ export async function handleIconAutocomplete(args: unknown) {
  * Format collection search results
  */
 function formatCollectionSearchResults(response: SearchCollectionsResponse): string {
-  const { collections, total, next_page, prev_page, usage_limits } = response;
+  const { collections, total, next_page, prev_page } = response;
   
   let output = `📚 **Collection Search Results**\n\n`;
   output += `📊 Found ${total} collections total\n`;
@@ -158,15 +159,16 @@ function formatCollectionSearchResults(response: SearchCollectionsResponse): str
     output += `\n`;
   }
   
-  // Usage info with cost warning
-  output += `📈 **API Usage:** ${usage_limits.monthly.usage}/${usage_limits.monthly.limit} (monthly)\n`;
-  
-  // Add cost warning if applicable
-  const costWarning = getCostWarning(usage_limits.monthly.usage, usage_limits.monthly.limit);
+  const usageLine = formatUsageBrief(response.usage_limits ?? response);
+  if (usageLine) {
+    output += `📈 **${usageLine}**\n`;
+  }
+
+  const costWarning = getCostWarningFromSnapshot();
   if (costWarning) {
     output += costWarning;
   }
-  
+
   output += `\n💡 **Tip:** Use the \`get_collection\` tool to view collection details.\n`;
   
   return output;
@@ -176,7 +178,7 @@ function formatCollectionSearchResults(response: SearchCollectionsResponse): str
  * Format collection details
  */
 function formatCollectionDetails(response: GetCollectionResponse): string {
-  const { collection, usage_limits } = response;
+  const { collection } = response;
   
   let output = `📚 **Collection Details**\n\n`;
   output += `**Name:** ${collection.name}\n`;
@@ -197,7 +199,7 @@ function formatCollectionDetails(response: GetCollectionResponse): string {
     
     collection.icons.forEach((icon, index) => {
       output += `${index + 1}. **${icon.term}** (ID: ${icon.id})\n`;
-      output += `   - Style: ${icon.styles.map(s => s.style).join(', ')}\n`;
+      output += `   - Style: ${icon.styles?.length ? icon.styles.map(s => s.style).join(', ') : 'unspecified'}\n`;
       if (icon.thumbnail_url) {
         output += `   - Thumbnail: ${icon.thumbnail_url}\n`;
       }
@@ -214,9 +216,12 @@ function formatCollectionDetails(response: GetCollectionResponse): string {
   }
   
   output += `🔗 **Permalink:** https://thenounproject.com${collection.permalink}\n\n`;
-  
-  output += `📈 **API Usage:** ${usage_limits.monthly.usage}/${usage_limits.monthly.limit} (monthly)\n`;
-  
+
+  const usageLine = formatUsageBrief(response.usage_limits ?? response);
+  if (usageLine) {
+    output += `📈 **${usageLine}**\n`;
+  }
+
   return output;
 }
 
@@ -224,7 +229,7 @@ function formatCollectionDetails(response: GetCollectionResponse): string {
  * Format autocomplete results
  */
 function formatAutocompleteResults(response: IconAutocompleteResponse): string {
-  const { suggestions, usage_limits } = response;
+  const { suggestions } = response;
   
   let output = `💡 **Autocomplete Suggestions**\n\n`;
   
@@ -239,8 +244,12 @@ function formatAutocompleteResults(response: IconAutocompleteResponse): string {
     output += `${index + 1}. ${suggestion}\n`;
   });
   
-  output += `\n📈 **API Usage:** ${usage_limits.monthly.usage}/${usage_limits.monthly.limit} (monthly)\n`;
-  
+  output += `\n`;
+  const usageLine = formatUsageBrief(response.usage_limits ?? response);
+  if (usageLine) {
+    output += `📈 **${usageLine}**\n`;
+  }
+
   output += `\n💡 **Tip:** Use one of these suggestions with \`search_icons\` to search.\n`;
   
   return output;

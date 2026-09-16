@@ -100,8 +100,8 @@ claude mcp add \
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/book-white.svg"><img src="docs/icons/book.svg" width="20" height="20" alt="Collection"></picture> **Collection Browser**: Explore curated icon collections
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/lightbulb-white.svg"><img src="docs/icons/lightbulb.svg" width="20" height="20" alt="Idea"></picture> **Smart Suggestions**: Autocomplete helps find the right search terms
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/chart-white.svg"><img src="docs/icons/chart.svg" width="20" height="20" alt="Chart"></picture> **Usage Tracking**: Monitor your API usage and limits
-- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/free-white.svg"><img src="docs/icons/free.svg" width="20" height="20" alt="Free"></picture> **FREE Tier Mode**: Smart optimizations for 5K monthly API calls
-- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/diamond-white.svg"><img src="docs/icons/diamond.svg" width="20" height="20" alt="Diamond"></picture> **PAID Tier Mode**: Unlimited access with no restrictions
+- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/free-white.svg"><img src="docs/icons/free.svg" width="20" height="20" alt="Free"></picture> **FREE Tier Mode**: Smart optimizations for trial quotas (2,000 service / 150 icon calls per month)
+- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/diamond-white.svg"><img src="docs/icons/diamond.svg" width="20" height="20" alt="Diamond"></picture> **PAID Tier Mode**: Pay-Per-Use limits with fewer client-side caps
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/package-white.svg"><img src="docs/icons/package.svg" width="24" height="24" alt="Builder"></picture> About the Builder
 
@@ -171,26 +171,31 @@ Edit `.env` with your credentials:
 NOUN_CONSUMER_KEY=your_consumer_key_here
 NOUN_CONSUMER_SECRET=your_consumer_secret_here
 
-# Choose your tier: FREE (5K calls/month) or PAID (unlimited)
+# Choose your tier: FREE (trial quotas) or PAID (Pay-Per-Use)
 NOUN_API_TIER=FREE
 ```
 
 #### <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/free-white.svg"><img src="docs/icons/free.svg" width="20" height="20" alt="FREE"></picture> FREE vs <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/diamond-white.svg"><img src="docs/icons/diamond.svg" width="20" height="20" alt="PAID"></picture> PAID Tier
 
-**FREE Tier (5,000 API calls/month)**
-- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> Perfect for personal projects and testing
-- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> Automatic cost optimizations
+Noun Project counts two families of calls, each with hourly, daily, and monthly windows. Exceeding any window returns HTTP 429.
+
+- **Service call** — search, collections, autocomplete, usage (no icon ID in the URL)
+- **Icon call** — `get_icon`, `download_icon` (any request whose path includes an icon ID)
+
+**FREE Trial**
+- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> Service: 1,000/day · 2,000/month
+- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> Icon: 150/day **and** 150/month
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> Smaller page sizes (max 10 results per search)
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> Optimized thumbnails (42px by default)
-- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> SVG URLs excluded by default (save bandwidth)
-- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> Smart usage alerts at 50%, 80%, 95%
+- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> SVG URLs excluded by default
+- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> Usage alerts plus GET response caching (5 min)
 
-**PAID Tier (Unlimited)**
-- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> No monthly limits
+**PAID (Pay-Per-Use)**
+- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> Service: 200,000/day · 3,000,000/month
+- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> Icon: 10,000/day · 150,000/month
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> Larger page sizes (up to 100 results)
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> High-quality thumbnails (84px by default)
 - <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> SVG URLs included automatically
-- <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/checkmark-white.svg"><img src="docs/icons/checkmark.svg" width="16" height="16" alt="✓"></picture> No restrictions
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/lightbulb-white.svg"><img src="docs/icons/lightbulb.svg" width="20" height="20" alt="Tip"></picture> **Switch anytime:** Just update `NOUN_API_TIER` in your `.env` file!
 
@@ -397,40 +402,46 @@ Check your API usage and limits.
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/free-white.svg"><img src="docs/icons/free.svg" width="24" height="24" alt="FREE Tier"></picture> FREE Tier Best Practices
 
-Maximize your 5,000 monthly calls:
+Protect the tight **icon-call** cap (150/day):
 
-### 1. Be Specific
+### 1. Search is enough for browsing
+```
+search_icons already returns ID, style, license, thumbnail, tags, attribution.
+Do not call get_icon for every result — that burns icon quota.
+```
+
+### 2. Be Specific
 ```
 Bad:  "icon"       → Too broad, many pages needed
 Good: "coffee cup" → Specific, better results
 ```
 
-### 2. Use Autocomplete First
+### 3. Use Autocomplete First
 ```
 Step 1: "Suggestions for 'cof'"  → ["coffee", "coffee cup"]
 Step 2: "Search for 'coffee cup'" → Exact results
 ```
 
-### 3. Avoid Pagination
+### 4. Avoid Pagination
 ```
-Bad:  Browsing 5 pages = 5 API calls
+Bad:  Browsing 5 pages = 5 service calls
 Good: Refine search to get results on first page
 ```
 
-### 4. Download Once, Reuse
+### 5. Download Once, Reuse
 ```
 Download icon → Save to project → Use everywhere
-(Don't re-download the same icon)
+(Don't re-download the same icon; each download is an icon call)
 ```
 
-### 5. Filter for Public Domain
+### 6. Filter for Public Domain
 ```
 FREE tier can only download public domain icons
 Filter searches with limit_to_public_domain=1
 ```
 
-### 6. Cache Results
-The server automatically caches usage data for 5 minutes.
+### 7. Cache Results
+The server caches identical GET searches / icon lookups for 5 minutes, and usage data for 5 minutes.
 You should also save:
 - Downloaded icons
 - Icon IDs you've explored
@@ -440,15 +451,15 @@ You should also save:
 
 The server automatically optimizes API usage in FREE tier mode:
 
-| Feature | FREE Tier | PAID Tier |
-|---------|-----------|-----------|
+| Feature | FREE Trial | PAID (Pay-Per-Use) |
+|---------|------------|--------------------|
+| Service calls | 1,000/day · 2,000/month | 200,000/day · 3,000,000/month |
+| Icon calls (`get_icon`, `download_icon`) | 150/day · 150/month | 10,000/day · 150,000/month |
 | Results per page | 10 max | 100 max |
 | Default thumbnail | 42px | 84px |
 | SVG URLs | Excluded | Included |
-| Pagination warnings | Yes | No |
-| Usage alerts | 50%, 80%, 95% | None |
-
-**Want full details?** See [COST_OPTIMIZATION.md](COST_OPTIMIZATION.md)
+| GET cache | 5 min | 5 min |
+| 429 handling | Retry + Retry-After (capped) | Retry + Retry-After (capped) |
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/wrench-white.svg"><img src="docs/icons/wrench.svg" width="24" height="24" alt="Development"></picture> Development
 
@@ -479,7 +490,10 @@ noun-mcp/
 │   ├── index.ts              # MCP server entry point
 │   ├── api/
 │   │   ├── auth.ts          # OAuth 1.0a authentication
-│   │   └── client.ts        # API client with rate limiting
+│   │   ├── client.ts        # API client (queue, retry, cache)
+│   │   ├── errors.ts        # ApiError + retry policy
+│   │   ├── usage.ts         # Quota snapshot (legacy + v2)
+│   │   └── cache.ts         # GET LRU cache
 │   ├── tools/
 │   │   ├── search.ts        # Icon search functionality
 │   │   ├── download.ts      # Icon download & details
@@ -521,12 +535,13 @@ For system design, data flow, and design decisions, see **[docs/ARCHITECTURE.md]
 
 ### "Rate limit exceeded"
 
-**Problem:** Too many requests too fast.
+**Problem:** An hourly, daily, or monthly window (service or icon) was exhausted — or requests were sent too fast.
 
 **Solution:**
-- Wait a moment (limit is 100 requests/minute)
-- The server automatically handles rate limiting
-- If persistent, check your usage with `check_usage` tool
+- Run `check_usage` to see which window is empty
+- Stop calling `get_icon` on every search hit (icon quota is the usual culprit on the free trial)
+- Wait for the window in the error message to reset
+- The server queues requests (one at a time), retries transient 429/5xx with backoff, and caches identical GETs for 5 minutes
 
 ### SVG URLs Not Working
 
@@ -557,12 +572,14 @@ For system design, data flow, and design decisions, see **[docs/ARCHITECTURE.md]
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/document-white.svg"><img src="docs/icons/document.svg" width="24" height="24" alt="API Limits"></picture> API Limits
 
-| Tier | Monthly Limit | Rate Limit | Download Access |
+| Tier | Service calls | Icon calls | Download access |
 |------|---------------|------------|-----------------|
-| FREE | 5,000 calls | 100/min | Public domain only |
-| PAID | Unlimited | 100/min | All icons |
+| FREE trial | 1,000/day · 2,000/month | 150/day · 150/month | Public domain only |
+| Pay-Per-Use | 200,000/day · 3,000,000/month | 10,000/day · 150,000/month | All icons |
 
-**Want more?** Check [The Noun Project Pricing](https://thenounproject.com/pricing)
+An **icon call** is any request whose URL includes an icon ID (`get_icon`, `download_icon`). Everything else is a **service call**. All keys also have hourly limits; exceeding any window returns HTTP 429.
+
+**Want more?** Check [The Noun Project API pricing](https://thenounproject.com/api/)
 
 ## <picture><source media="(prefers-color-scheme: dark)" srcset="docs/icons/handshake-white.svg"><img src="docs/icons/handshake.svg" width="24" height="24" alt="Contributing"></picture> Contributing
 

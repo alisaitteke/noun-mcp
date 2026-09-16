@@ -3,8 +3,9 @@
  */
 
 import { searchIcons } from '../api/client.js';
+import { formatUsageBrief } from '../api/usage.js';
 import { SearchIconsInputSchema, SearchIconsResponse } from '../types/schemas.js';
-import { isFreeTier, shouldLimitPagination, getCostWarning } from '../utils/costOptimizer.js';
+import { isFreeTier, shouldLimitPagination, getCostWarningFromSnapshot } from '../utils/costOptimizer.js';
 
 /**
  * search_icons tool handler
@@ -48,10 +49,10 @@ export async function handleSearchIcons(args: unknown) {
  * Format search results into readable text
  */
 function formatSearchResults(response: SearchIconsResponse): string {
-  const { icons, total, next_page, prev_page, usage_limits } = response;
+  const { icons, total, next_page, prev_page } = response;
   
   let output = `🔍 **Icon Search Results**\n\n`;
-  output += `📊 Found ${total} icons total\n`;
+  output += `📊 Found ${total ?? icons.length} icons total\n`;
   output += `📄 Showing ${icons.length} icons on this page\n`;
   
   // FREE tier indicator
@@ -70,8 +71,8 @@ function formatSearchResults(response: SearchIconsResponse): string {
   icons.forEach((icon, index) => {
     output += `### ${index + 1}. ${icon.term}\n`;
     output += `**ID:** ${icon.id}\n`;
-    output += `**Style:** ${icon.styles.map(s => s.style + (s.line_weight ? ` (weight: ${s.line_weight})` : '')).join(', ')}\n`;
-    output += `**Creator:** ${icon.creator.name} (@${icon.creator.username})\n`;
+    output += `**Style:** ${formatStyles(icon.styles)}\n`;
+    output += `**Creator:** ${icon.creator?.name ?? 'Unknown'}${icon.creator?.username ? ` (@${icon.creator.username})` : ''}\n`;
     output += `**License:** ${icon.license_description}\n`;
     
     if (icon.tags && icon.tags.length > 0) {
@@ -106,15 +107,24 @@ function formatSearchResults(response: SearchIconsResponse): string {
   }
   
   // Usage info with cost warning
-  output += `📈 **API Usage:** ${usage_limits.monthly.usage}/${usage_limits.monthly.limit} (monthly)\n`;
-  
-  // Add cost warning if applicable
-  const costWarning = getCostWarning(usage_limits.monthly.usage, usage_limits.monthly.limit);
+  const usageLine = formatUsageBrief(response.usage_limits ?? response);
+  if (usageLine) {
+    output += `📈 **${usageLine}**\n`;
+  }
+
+  const costWarning = getCostWarningFromSnapshot();
   if (costWarning) {
     output += costWarning;
   }
-  
-  output += `\n💡 **Tip:** Use the \`download_icon\` tool to download an icon.\n`;
+
+  output += `\n💡 **Tip:** Use an ID from these results with \`download_icon\` if you need a file. Do **not** call \`get_icon\` for every result — search already includes metadata (icon calls are capped at 150/day on the free trial).\n`;
   
   return output;
+}
+
+function formatStyles(styles: SearchIconsResponse['icons'][number]['styles'] | undefined): string {
+  if (!styles || styles.length === 0) {
+    return 'unspecified';
+  }
+  return styles.map((s) => s.style + (s.line_weight ? ` (weight: ${s.line_weight})` : '')).join(', ');
 }

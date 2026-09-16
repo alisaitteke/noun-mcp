@@ -53,7 +53,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: 'search_icons',
-        description: 'Search for icons on The Noun Project. You can filter by style, line weight, public domain, and more.',
+        description:
+          'Search The Noun Project for icons. Returns IDs, style, license, thumbnails, tags, and attribution. This is a cheap *service* call — do NOT follow up with get_icon for every result. Use download_icon only when the user wants a file. Prefer a specific query over pagination (FREE trial: 2,000 service calls/month, 1,000/day).',
         inputSchema: {
           type: 'object',
           properties: {
@@ -103,7 +104,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'get_icon',
-        description: 'Get detailed information about a specific icon (metadata, creator, tags, download URLs).',
+        description:
+          'Get extra details for one icon, including a temporary SVG icon_url (expires in 1 hour). This is an expensive *icon* call (FREE trial: 150/day and 150/month). Skip it when search_icons already has the metadata you need.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -122,7 +124,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'download_icon',
-        description: 'Download an icon with custom color and size options. Supports SVG or PNG formats. Note: Free API access is limited to public domain icons only.',
+        description:
+          'Download one icon as SVG or PNG (optional color/size; FREE trial is public-domain only). This is an expensive *icon* call (150/day on the free trial). Use only when the user asked to save or embed the file, not to inspect search results.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -153,7 +156,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'search_collections',
-        description: 'Search for collections on The Noun Project.',
+        description: 'Search Noun Project collections (icon sets). Service call — cheaper than get_icon/download_icon.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -179,7 +182,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'get_collection',
-        description: 'Get details and icons of a specific collection.',
+        description: 'Get a collection and a page of its icons. Service call. Prefer this over calling get_icon on each member.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -215,7 +218,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'icon_autocomplete',
-        description: 'Get autocomplete suggestions for icon search.',
+        description: 'Autocomplete icon search terms (max 10). Cheap service call — use before searching if the query is ambiguous.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -233,7 +236,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'check_usage',
-        description: 'Check API usage limits and current usage.',
+        description:
+          'Show current API usage vs limits for hourly, daily, and monthly windows, split into service calls vs icon calls. Cached for 5 minutes.',
         inputSchema: {
           type: 'object',
           properties: {},

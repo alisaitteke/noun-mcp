@@ -10,8 +10,8 @@ Core responsibilities:
 
 1. **Protocol adaptation** — Map MCP tool calls to Noun Project REST endpoints
 2. **Authentication** — Sign every outbound request with OAuth 1.0a (HMAC-SHA1)
-3. **Resilience** — Rate limiting, actionable error messages, request timeouts
-4. **Cost awareness** — FREE-tier optimizations to protect the 5,000 calls/month quota
+3. **Resilience** — Single-flight queue, 429/5xx retry with Retry-After, GET cache, quota fail-fast
+4. **Cost awareness** — FREE-trial optimizations for 2,000 service / 150 icon calls per month (plus daily/hourly windows)
 
 ## System Context
 
@@ -65,15 +65,20 @@ flowchart LR
 
 - Axios instance targeting `https://api.thenounproject.com/v2`
 - Request interceptor attaches OAuth headers to every call
-- Response interceptor maps HTTP status codes to actionable errors (401, 404, 429)
-- **Bottleneck** rate limiter: max 5 concurrent, 600 ms min spacing (~100 req/min API limit)
-- All public functions (`searchIcons`, `getIcon`, `downloadIcon`, etc.) go through `makeRequest()` for consistent limiting
+- Response interceptor maps HTTP status to `ApiError` (keeps status, body `error`/`message`/`request_id`, `Retry-After`)
+- Harvests `usage` / `usage_limits` from every 2xx into a process-local snapshot (legacy `{ monthly: { limit, usage } }` and current hourly/daily/monthly × service/icon)
+- **Bottleneck**: `maxConcurrent: 1`, `minTime: 400` — one in-flight request, no burst
+- Classifies each call as **service** (search, collections, autocomplete, usage) or **icon** (`get_icon`, `download_icon`)
+- Fail-fast when a harvested window has 0 remaining for that kind
+- Retries 429 / 5xx / network up to 3 attempts with exponential backoff + jitter; honors `Retry-After` unless it exceeds 8s (monthly-quota waits are not slept)
+- LRU GET cache (~5 min) for search/get/collection/autocomplete/usage; downloads are never cached; 429 invalidates caches
+- All public functions go through `makeRequest()`
 
 ### Cost optimizer — `src/utils/costOptimizer.ts`
 
 - Reads `NOUN_API_TIER` (`FREE` | `PAID`) at startup
-- **FREE tier** (default): caps page size at 10, uses 42px thumbnails, excludes SVG URLs unless explicitly requested, emits usage warnings at 50/80/95%
-- **PAID tier**: passes through user limits, includes SVG by default, no pagination warnings
+- **FREE trial** (default): caps page size at 10, uses 42px thumbnails, excludes SVG URLs unless explicitly requested, warns on the tightest remaining quota window
+- **PAID**: passes through user limits, includes SVG by default
 - Applied transparently inside `client.ts` so tool handlers stay simple
 
 ### Tool handlers — `src/tools/`
@@ -122,9 +127,11 @@ sequenceDiagram
 | Decision | Rationale | Alternatives considered |
 | --- | --- | --- |
 | **stdio transport** | Standard MCP distribution via `npx`; no open ports or HTTP server to secure | HTTP/SSE transport — rejected for simpler install |
-| **Bottleneck rate limiter** | Enforces Noun API 100 req/min limit proactively; avoids 429 storms | Manual retry loops — less predictable under load |
+| **Bottleneck + bounded retry** | One in-flight request; retries transient 429/5xx with Retry-After cap so MCP tools do not hang on monthly resets | Burst limiter only — 429s still reached the user immediately |
+| **Service vs icon classification** | Matches Noun Project v2 billing: searches are cheap, `get_icon`/`download_icon` share a much smaller cap | Treat every request as one 5,000/month bucket |
+| **GET LRU cache (5 min)** | LLM tool loops repeat the same search; cache avoids burning quota | Cache only `check_usage` |
 | **Tier-aware defaults in client layer** | Single place for FREE/PAID policy; tool handlers stay thin | Per-tool optimization — duplicated logic |
-| **LRU cache on usage (5 min)** | `check_usage` is polled often; caching saves quota on FREE tier | No cache — wastes calls on repeated status checks |
+| **LRU cache on usage (5 min)** | `check_usage` is polled often; caching saves quota | No cache — wastes calls on repeated status checks |
 | **Zod at handler boundary** | Runtime safety for LLM-generated arguments; clear error messages | Trust MCP schema only — insufficient for malformed input |
 | **OAuth per-request signing** | Required by Noun Project API; no long-lived tokens to manage | API key header — not supported by upstream |
 | **Actionable error messages** | 401/429/404 include next steps (verify keys, wait, check URL) | Raw API errors — poor DX for AI-assisted workflows |
@@ -139,16 +146,16 @@ sequenceDiagram
 | `search_collections` | `query` | Curated collection search |
 | `get_collection` | `collection_id` | Collection detail with paginated icons |
 | `icon_autocomplete` | `query` | Up to 10 search suggestions |
-| `check_usage` | _(none)_ | Monthly limit/usage; cached 5 min on FREE tier |
+| `check_usage` | _(none)_ | Hourly/daily/monthly × service/icon; cached 5 min |
 
 ## Error Handling Philosophy
 
 Errors are translated before they reach the MCP client:
 
-- **401** — Credential mismatch; link to developer portal
-- **404** — Resource not found with request path
-- **429** — Rate limit; advise waiting (server also pre-limits via Bottleneck)
-- **Network** — Connection failure vs. timeout distinguished
+- **401** — Credential mismatch; link to developer portal (not retried)
+- **404** — Resource not found with request path (not retried)
+- **429** — Quota window exhausted; message names service vs icon and the window when known. Transient 429s retry with Retry-After (capped at 8s)
+- **5xx / network / timeout** — Retried up to 3 attempts
 - **Public domain** — Download tool surfaces FREE-tier licensing constraints clearly
 
 All tool errors return MCP `isError: true` with a single human-readable message suitable for display in an AI chat.
@@ -170,7 +177,7 @@ Apply FREE-tier optimizations in the client layer when the new endpoint consumes
 | --- | --- | --- |
 | `NOUN_CONSUMER_KEY` | Yes | OAuth consumer key |
 | `NOUN_CONSUMER_SECRET` | Yes | OAuth consumer secret |
-| `NOUN_API_TIER` | Yes | `FREE` (5K/mo, optimized) or `PAID` (unlimited) |
+| `NOUN_API_TIER` | Yes | `FREE` (trial quotas, optimized) or `PAID` (Pay-Per-Use / custom) |
 
 ## Related Work
 
